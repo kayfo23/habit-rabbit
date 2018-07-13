@@ -1,4 +1,3 @@
-// const habits = [];
 
 const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -12,12 +11,11 @@ const month = today.getMonth();
 const date = today.getDate();
 const year = today.getFullYear();
 
-//render month in header
 document.getElementById('month-header').textContent = months[month];
 
 
 
-// CREATE DAY & DATE HEADER CELLS
+// RENDER DAY & DATE HEADER CELLS
 
 const getMonthStartDay = () => {
   const currDate = today.getDate();
@@ -97,17 +95,6 @@ const addHabitTitle = (habit, row) => {
   return row;
 };
 
-// const addDailyCells = row => {
-//   for (let i = 0; i < 35; i++) {
-//     const cell = document.createElement('td');
-//     cell.classList.add('cell', 'daily-cell');
-
-//     cell.addEventListener('click', () => changeCellColor(cell));
-
-//     row.appendChild(cell);
-//   }
-// }
-
 const addDailyCells = (habit, row) => {
   for (i = 1; i <= monthLength; i++) {
     let currDay = startDay;
@@ -117,7 +104,7 @@ const addDailyCells = (habit, row) => {
 
     const cell = document.createElement("td");
     cell.classList.add("cell", "daily-cell");
-    cell.setAttribute("date-key", dateKey);
+    // cell.setAttribute("date-key", dateKey);
 
     if (habit.history[dateKey]) {
       cell.classList.add(habit.history[dateKey]);
@@ -145,72 +132,11 @@ const addDailyCells = (habit, row) => {
 //   }
 // }
 
-// const renderHabit = habit => {
-//   let row = document.createElement('tr');
-//   row = addHabitTitle(habit, row);
-
-//   if (habit.type === 'weekly') {
-//     addWeeklyCells(row);
-//   } else {
-//     addDailyCells(row);
-//   }
-
-//   document.getElementById('table-body').appendChild(row);
-// }
-
-// render any saved habits
-// if (habits) {
-//   habits.forEach(habit => {
-//     renderHabit(habit);
-//   });
-// }
 
 
-// OPTIONS
 
-// basic change a cell's color (default -> complete -> incomplete -> default)
-// const changeCellColor = cell => {
-//   if (cell.classList.contains('complete')) { 
-//     cell.classList.toggle('complete'); 
-//     cell.classList.toggle('incomplete');
-//   } else if (cell.classList.contains('incomplete')) {
-//     cell.classList.toggle('incomplete');
-//   } else {
-//     cell.classList.toggle('complete');
-//   }
-// }
-
-
-// ADD HABITS
-// turn into popover?
 
 const form = document.getElementById('form');
-
-const resetForm = () => {
-  document.getElementById('habit-title-input').value = ""; // clear new habit title input
-  document.getElementById('habit-type-daily').checked = true;
-}
-
-// create unique identifier function
-
-// form.addEventListener('submit', event => {
-//   event.preventDefault();
-
-//   const data = new FormData(form);
-//   let newHabit = {};
-//   for (const entry of data) {
-//     if (entry[0] === 'habit-title') { newHabit.title = entry[1] };
-//     if (entry[0] === 'habit-type') { newHabit.type = entry[1] };
-//   }
-//   habits.push(newHabit);
-//   renderHabit(newHabit);
-
-//   resetForm();
-// });
-
-
-
-
 
 // localStorage database
 // instance of object used to store the database of habtis for the user
@@ -225,8 +151,7 @@ window.onload = function() {
   request.onsuccess = function() {
     console.log('database opened successfully');
     db = request.result; // object representing db
-
-    displayData();
+    displayHabits();
   }
 
   // runs if db not setup, or is opened with greater version number
@@ -240,45 +165,13 @@ window.onload = function() {
     objectStore.createIndex('title', 'title', { unique: false });
     objectStore.createIndex('type', 'type', { unique: false });
     objectStore.createIndex('history', 'history', { unique: false });
-
     console.log('database setup complete');
   }
 
-  form.onsubmit = addData;
-
-  function addData(e) {
-    e.preventDefault();
-
-    const titleInput = document.getElementById('habit-title-input').value;
-    const typeInput = document.getElementById('habit-type-daily').checked ? 
-                        document.getElementById('habit-type-daily').value :
-                        document.getElementById('habit-type-weekly').value;
-
-    // let newHabit = { title: titleInput, type: typeInput };
-    let newHabit = { title: titleInput, type: typeInput, history: {} };
-
-    let transaction = db.transaction(['habits'], 'readwrite');
-    let objectStore = transaction.objectStore('habits');
-
-    var request = objectStore.add(newHabit);
-
-    request.onsuccess = function() {
-      resetForm();
-    }
-
-    transaction.oncomplete = function() {
-      console.log('transaction complete: database modification finished');
-      displayData();
-    }
-
-    transaction.onerror = function() {
-      console.log('transaction not opened due to error');
-    }
-  }
-
-  
+  form.onsubmit = addHabit;
 }
-function displayData() {
+
+function displayHabits() {
   const tableBody = document.getElementById('table-body');
   tableBody.innerHTML = '';
 
@@ -321,11 +214,39 @@ function displayData() {
   }
 }
 
-// DELETE HABITS
+// ADD HABITS
 
+function addHabit(e) {
+  e.preventDefault();
 
+  const titleInput = document.getElementById("habit-title-input").value;
+  const typeInput = document.getElementById("habit-type-daily").checked
+    ? document.getElementById("habit-type-daily").value
+    : document.getElementById("habit-type-weekly").value;
 
-// UPDATING HABITS
+  let newHabit = { title: titleInput, type: typeInput, history: {} };
+
+  let transaction = db.transaction(["habits"], "readwrite");
+  let objectStore = transaction.objectStore("habits");
+
+  var request = objectStore.add(newHabit);
+
+  request.onsuccess = function() {
+    document.getElementById("habit-title-input").value = ""; // clear new habit title input
+    document.getElementById("habit-type-daily").checked = true;
+  };
+
+  transaction.oncomplete = function() {
+    console.log("transaction complete: database modification finished");
+    displayHabits();
+  };
+
+  transaction.onerror = function() {
+    console.log("transaction not opened due to error");
+  };
+}
+
+// UPDATE HABITS
 
 function updateHabit(habitId, dateKey) {
   var objectStore = db.transaction(['habits'], 'readwrite'). objectStore('habits');
@@ -348,9 +269,11 @@ function updateHabit(habitId, dateKey) {
 
     var updateHabitRequest = objectStore.put(habit);
     updateHabitRequest.onsuccess = function() {
-      displayData();
+      displayHabits();
       console.log('habit response saved');
     }
   }
 } 
+
+// DELETE HABITS
 
