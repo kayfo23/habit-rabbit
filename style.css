@@ -1,0 +1,75 @@
+*,
+*:before,
+*:after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'avenir', arial;
+}
+
+.color-sample {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+}
+.color-sample-complete {
+  background-color: lightgreen;
+}
+.color-sample-incomplete {
+  background: pink;
+}
+
+.cell {
+  text-align: center;
+  border-radius: 5px;
+  background: rgb(225, 237, 254);
+}
+
+.date-cell {
+  width: 25px;
+  background: rgb(96, 151, 235);
+  color: #fff;
+}
+.habit-title-cell {
+  width: 200px;
+  font-weight: lighter;
+  background: rgb(38, 117, 235);
+  color: #fff;
+}
+.highlight {
+  background: rgb(140, 199, 247);
+}
+
+.complete {
+  background: lightgreen;
+}
+.incomplete {
+  background: pink;
+}
+.empty-date-cell {
+  background: lightgrey;
+}
+
+#form {
+  padding-top: 20px;  
+}
+
+#habit-title-input {
+  width: 200px;
+  height: 30px;
+  border-radius: 5px;
+  font-family: 'avenir', arial;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+#habit-submit {
+  width: 50px;
+  height: 30px;
+  border-radius: 5px;
+  font-family: 'avenir', arial;
+  font-size: 16px;
+}
