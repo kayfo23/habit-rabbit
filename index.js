@@ -1,91 +1,102 @@
+// set up client-side storage 
+let db;
+window.onload = function() {
+  let request = window.indexedDB.open('habits', 1); // opens db; creates if not already existing
 
+  request.onerror = function() {
+    console.log('database failed to open');
+  }
+  request.onsuccess = function() {
+    console.log('database opened successfully');
+    db = request.result; // object representing db
+    displayHabits();
+  }
+
+  // runs if db not setup, or is opened with greater version number
+  request.onupgradeneeded = function(e) {
+    let db = e.target.result; // equivalent to db = request.result
+
+    // create single table in db system
+    let objectStore = db.createObjectStore('habits', { keyPath: 'id', autoIncrement: true });
+
+    // define what data items it will contain
+    objectStore.createIndex('title', 'title', { unique: false });
+    objectStore.createIndex('type', 'type', { unique: false });
+    objectStore.createIndex('history', 'history', { unique: false });
+    console.log('database setup complete');
+  }
+
+  document.getElementById('form').onsubmit = addHabit;
+}
+
+
+
+
+//****************** VARIABLES *******************//
+
+// for date header & page header
 const days = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
+const today = new Date();
+const date = today.getDate();
+const month = today.getMonth();
+const year = today.getFullYear();
+
+// for matching Date.getDateString() output, used for storing responses
 const days2 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const months2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-const today = new Date();
-const month = today.getMonth();
-const date = today.getDate();
-const year = today.getFullYear();
 
 document.getElementById('month-header').textContent = months[month];
 
 
 
-// RENDER DAY & DATE HEADER CELLS
+//****************** DISPLAY HABITS *******************//
 
-const getMonthStartDay = () => {
-  const currDate = today.getDate();
-  const currDay = today.getDay();
-  let startDay = 0;
+function displayHabits() {
+  const tableBody = document.getElementById('table-body');
+  tableBody.innerHTML = '';
 
-  let dayCount = currDay;
+  // open object store and get cursor (iterates through all data items in store)
+  let objectStore = db.transaction('habits').objectStore('habits');
+  objectStore.openCursor().onsuccess = function(e) {
+    // get reference to cursor
+    let cursor = e.target.result;
 
-  for (let dateCount = currDate; dateCount > 0; dateCount--) {
-    if (dayCount === -1) { dayCount = 6 }
-    if (dateCount === 1) { startDay = dayCount }
-    dayCount--;
-  }
-  return startDay;
-}
+    if (cursor) {
+      let habit = cursor.value;
 
-const dateHeaderRow = document.getElementById('date-header-row');
+      let row = document.createElement('tr');
 
-const startDay = getMonthStartDay();
-const monthLength = monthLengths[month];
+      addHabitTitleCell(habit, row);
 
-const addDayAndDateCells = () => {
+      // if (habit.type === "weekly") {
+      //   addWeeklyCells(row);
+      // } else {
+        addDailyCells(habit, row);
+      // }
+      row.setAttribute('data-habit-id', habit.id);
 
-  // const addEmptyCell = date => {
-  //   const emptyCell = document.createElement('td');
-  //   emptyCell.textContent = date;
-  //   emptyCell.classList.add('cell', 'date-cell', 'empty-date-cell');
-  //   dateHeaderRow.appendChild(emptyCell);
-  // }
+      tableBody.appendChild(row);
+      legend.style.opacity = 1;
 
-  // add empty cells to beginning 
-  // ex: if previous month had 30 days and currMonth started on 2, 
-  // the first 2 cells should show 29 & 30
-  // for (let i = startDay; i > 0; i++) {
-  //   const prevMonth = month - 1;
-  //   if (prevMonth === -1) { prevMonth = 11 };
-  //   const prevMonthLength = monthLengths[prevMonth];
-
-  //   addEmptyCell(prevMonthLength - i - 1);
-  // }
-
-  // add date cells
-  for (let i = 1; i <= monthLength; i++) {
-    const cell = document.createElement('td');
-    cell.classList.add('cell', 'date-cell');
-    cell.textContent = i;
-    if (i === date) {
-      cell.classList.add('highlight');
+      // iterator to next item in cursor
+      cursor.continue();
+    } else {
+      if (!tableBody.innerHTML) {
+        let row = document.createElement('tr');
+        let cell = document.createElement('td');
+        cell.textContent = `no habits here! add some below.`;
+        cell.setAttribute('colspan', 40);
+        row.appendChild(cell);
+        tableBody.appendChild(row);
+        legend.style.opacity = 0;
+      }
     }
-    dateHeaderRow.appendChild(cell);
   }
-  // add empty cells to end
-  // for (let i = 0; i < (35 - monthLength + startDay); i++) {
-  //   addEmptyCell(i + 1);
-  // }
-
-  // add days above dates
-  const allDateCells = document.querySelectorAll('.date-cell');
-  for (let i = 0; i < allDateCells.length; i++) {
-    const day = document.createElement('div');
-    day.textContent = days[i % 7];
-    allDateCells[i].prepend(day);
-  }
-
 }
-
-addDayAndDateCells();
-
-
-// RENDER HABITS
 
 const addHabitTitleCell = (habit, row) => {
   const title = document.createElement('td');
@@ -142,88 +153,7 @@ const addDailyCells = (habit, row) => {
 // }
 
 
-
-
-
-const form = document.getElementById('form');
-
-// localStorage database
-// instance of object used to store the database of habtis for the user
-let db;
-
-window.onload = function() {
-  let request = window.indexedDB.open('habits', 1); // opens db; creates if not already existing
-
-  request.onerror = function() {
-    console.log('database failed to open');
-  }
-  request.onsuccess = function() {
-    console.log('database opened successfully');
-    db = request.result; // object representing db
-    displayHabits();
-  }
-
-  // runs if db not setup, or is opened with greater version number
-  request.onupgradeneeded = function(e) {
-    let db = e.target.result; // equivalent to db = request.result
-
-    // create single table in db system
-    let objectStore = db.createObjectStore('habits', { keyPath: 'id', autoIncrement: true });
-
-    // define what data items it will contain
-    objectStore.createIndex('title', 'title', { unique: false });
-    objectStore.createIndex('type', 'type', { unique: false });
-    objectStore.createIndex('history', 'history', { unique: false });
-    console.log('database setup complete');
-  }
-
-  form.onsubmit = addHabit;
-}
-
-function displayHabits() {
-  const tableBody = document.getElementById('table-body');
-  tableBody.innerHTML = '';
-
-  // open object store and get cursor (iterates through all data items in store)
-  let objectStore = db.transaction('habits').objectStore('habits');
-  objectStore.openCursor().onsuccess = function(e) {
-    // get reference to cursor
-    let cursor = e.target.result;
-
-    if (cursor) {
-      let habit = cursor.value;
-
-      let row = document.createElement('tr');
-
-      addHabitTitleCell(habit, row);
-
-      // if (habit.type === "weekly") {
-      //   addWeeklyCells(row);
-      // } else {
-        addDailyCells(habit, row);
-      // }
-      row.setAttribute('data-habit-id', habit.id);
-
-      tableBody.appendChild(row);
-      legend.style.opacity = 1;
-
-      // iterator to next item in cursor
-      cursor.continue();
-    } else {
-      if (!tableBody.innerHTML) {
-        let row = document.createElement('tr');
-        let cell = document.createElement('td');
-        cell.textContent = `no habits here! add some below.`;
-        cell.setAttribute('colspan', 40);
-        row.appendChild(cell);
-        tableBody.appendChild(row);
-        legend.style.opacity = 0;
-      }
-    }
-  }
-}
-
-// ADD HABITS
+//****************** ADD HABITS *******************//
 
 function addHabit(e) {
   e.preventDefault();
@@ -256,7 +186,7 @@ function addHabit(e) {
   };
 }
 
-// UPDATE HABITS
+//****************** UPDATE HABITS *******************//
 
 function updateHabit(habitId, dateKey) {
   var objectStore = db.transaction(['habits'], 'readwrite'). objectStore('habits');
@@ -285,7 +215,7 @@ function updateHabit(habitId, dateKey) {
   }
 } 
 
-// DELETE HABITS
+//****************** DELETE HABITS *******************//
 
 function deleteHabit(habitId) {
   var deleteRequest = db.transaction(['habits'], 'readwrite')
@@ -296,3 +226,73 @@ function deleteHabit(habitId) {
     displayHabits();
   }
 }
+
+//****************** DISPLAY DATE HEADERS *******************//
+
+const getMonthStartDay = () => {
+  const currDate = today.getDate();
+  const currDay = today.getDay();
+  let startDay = 0;
+
+  let dayCount = currDay;
+
+  for (let dateCount = currDate; dateCount > 0; dateCount--) {
+    if (dayCount === -1) {
+      dayCount = 6;
+    }
+    if (dateCount === 1) {
+      startDay = dayCount;
+    }
+    dayCount--;
+  }
+  return startDay;
+};
+
+const dateHeaderRow = document.getElementById("date-header-row");
+
+const startDay = getMonthStartDay();
+const monthLength = monthLengths[month];
+
+const addDayAndDateCells = () => {
+  // const addEmptyCell = date => {
+  //   const emptyCell = document.createElement('td');
+  //   emptyCell.textContent = date;
+  //   emptyCell.classList.add('cell', 'date-cell', 'empty-date-cell');
+  //   dateHeaderRow.appendChild(emptyCell);
+  // }
+
+  // add empty cells to beginning
+  // ex: if previous month had 30 days and currMonth started on 2,
+  // the first 2 cells should show 29 & 30
+  // for (let i = startDay; i > 0; i++) {
+  //   const prevMonth = month - 1;
+  //   if (prevMonth === -1) { prevMonth = 11 };
+  //   const prevMonthLength = monthLengths[prevMonth];
+
+  //   addEmptyCell(prevMonthLength - i - 1);
+  // }
+
+  // add date cells
+  for (let i = 1; i <= monthLength; i++) {
+    const cell = document.createElement("td");
+    cell.classList.add("cell", "date-cell");
+    cell.textContent = i;
+    if (i === date) {
+      cell.classList.add("highlight");
+    }
+    dateHeaderRow.appendChild(cell);
+  }
+  // add empty cells to end
+  // for (let i = 0; i < (35 - monthLength + startDay); i++) {
+  //   addEmptyCell(i + 1);
+  // }
+
+  // add days above dates
+  const allDateCells = document.querySelectorAll(".date-cell");
+  for (let i = 0; i < allDateCells.length; i++) {
+    const day = document.createElement("div");
+    day.textContent = days[i % 7];
+    allDateCells[i].prepend(day);
+  }
+};
+addDayAndDateCells();

@@ -69,7 +69,7 @@ body {
 }
 .habit-title-cell {
   height: 30px;
-  background: var(--primary-color);
+  background: var(--highlight-color);
   position: relative;
 }
 
