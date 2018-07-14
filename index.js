@@ -87,7 +87,7 @@ addDayAndDateCells();
 
 // RENDER HABITS
 
-const addHabitTitle = (habit, row) => {
+const addHabitTitleCell = (habit, row) => {
   const title = document.createElement('td');
   title.classList.add('cell', 'habit-title-cell');
   title.textContent = habit.title;
@@ -195,7 +195,7 @@ function displayHabits() {
 
       let row = document.createElement('tr');
 
-      addHabitTitle(habit, row);
+      addHabitTitleCell(habit, row);
 
       // if (habit.type === "weekly") {
       //   addWeeklyCells(row);

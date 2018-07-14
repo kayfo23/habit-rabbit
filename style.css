@@ -8,18 +8,30 @@
 
 body {
   font-family: 'avenir', arial;
+  text-align: center;
+  margin: 20px;
+  background: rgb(255, 253, 245);
+}
+
+#month-header {
+  padding: 20px;
+  text-transform: lowercase;
+  font-weight: lighter;
+  font-size: 50px;
+}
+
+.legend-item {
+  display: inline-block;
+  font-size: 12px;
 }
 
 .color-sample {
   width: 20px;
   height: 20px;
   display: inline-block;
-}
-.color-sample-complete {
-  background-color: lightgreen;
-}
-.color-sample-incomplete {
-  background: pink;
+  border-radius: 5px;
+  transform: translateY(5px);
+  margin-right: 3px;
 }
 
 .cell {
@@ -29,32 +41,53 @@ body {
 }
 
 .date-cell {
-  width: 25px;
+  width: 30px;
   background: rgb(96, 151, 235);
   color: #fff;
 }
-.habit-title-cell {
-  width: 200px;
-  font-weight: lighter;
+.habits-header-cell {
+  width: 250px;
+  background: rgb(255, 253, 245);
+  /* font-weight: lighter;
   background: rgb(38, 117, 235);
+  color: #fff; */
+}
+.habit-title-cell {
+  height: 30px;
+  background: rgb(96, 151, 235);
   color: #fff;
 }
+
 .highlight {
   background: rgb(140, 199, 247);
 }
 
 .complete {
-  background: lightgreen;
+  background: rgb(57, 245, 129);
 }
 .incomplete {
-  background: pink;
+  background: rgb(255, 135, 155);
 }
-.empty-date-cell {
-  background: lightgrey;
+
+.delete {
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding-left: 10px;
 }
 
 #form {
-  padding-top: 20px;  
+  margin: 20px;  
+}
+
+.table-container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.table {
+  margin: 0 auto;
 }
 
 #habit-title-input {

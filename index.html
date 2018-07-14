@@ -14,24 +14,24 @@
   </div>
 
   <div id="legend">
-    <div><div class="color-sample color-sample-complete"></div>complete</div>
-    <div><div class="color-sample color-sample-incomplete"></div>incomplete</div>
+    <div class="legend-item"><div class="color-sample complete"></div>complete</div>
+    <div class="legend-item"><div class="color-sample incomplete"></div>incomplete</div>
+  </div>
+  
+  <div class="table-container">
+    <table class="table">
+      <thead id="table-head">
+        <tr id="date-header-row">
+          <!-- <th class="habits-header-cell cell">habits</th> -->
+          <th class="habits-header-cell cell"></th>
+        </tr>
+      </thead>
+      
+      <tbody id="table-body"></tbody>
+    </table>
   </div>
 
   <div>
-    <table>
-
-      <thead id="table-head">
-        <tr id="date-header-row">
-          <th id="habits-header" class="cell habit-title-cell">habits</th>
-        </tr>
-      </thead>
-
-      <tbody id="table-body">
-      </tbody>
-
-    </table>
-
     <form id="form">
 
       <input type="text" name="habit-title" id="habit-title-input" placeholder="new habit..." required>
@@ -44,7 +44,6 @@
       <button type="submit" id="habit-submit">add</button>
 
     </form>
-
   </div>
     
   <script src="index.js"></script>
