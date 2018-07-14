@@ -205,6 +205,7 @@ function displayHabits() {
       row.setAttribute('data-habit-id', habit.id);
 
       tableBody.appendChild(row);
+      legend.style.opacity = 1;
 
       // iterator to next item in cursor
       cursor.continue();
@@ -212,11 +213,12 @@ function displayHabits() {
       if (!tableBody.innerHTML) {
         let row = document.createElement('tr');
         let cell = document.createElement('td');
-        cell.textContent = 'no habits yet!';
+        cell.textContent = `no habits here! add some below.`;
+        cell.setAttribute('colspan', 40);
         row.appendChild(cell);
         tableBody.appendChild(row);
+        legend.style.opacity = 0;
       }
-      console.log('All habits displayed');
     }
   }
 }
@@ -227,9 +229,10 @@ function addHabit(e) {
   e.preventDefault();
 
   const titleInput = document.getElementById('habit-title-input').value;
-  const typeInput = document.getElementById('habit-type-daily').checked
-    ? document.getElementById('habit-type-daily').value
-    : document.getElementById('habit-type-weekly').value;
+  // const typeInput = document.getElementById('habit-type-daily').checked
+  //   ? document.getElementById('habit-type-daily').value
+  //   : document.getElementById('habit-type-weekly').value;
+  const typeInput = 'daily';
 
   let newHabit = { title: titleInput, type: typeInput, history: {} };
 
@@ -240,7 +243,7 @@ function addHabit(e) {
 
   request.onsuccess = function() {
     document.getElementById('habit-title-input').value = ''; // clear new habit title input
-    document.getElementById('habit-type-daily').checked = true;
+    // document.getElementById('habit-type-daily').checked = true;
   };
 
   transaction.oncomplete = function() {

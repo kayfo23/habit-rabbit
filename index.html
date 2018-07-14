@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Habit Tracker</title>
+  <title>habit tracker</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -12,18 +12,12 @@
   <div>
     <h1 id="month-header"></h1>
   </div>
-
-  <div id="legend">
-    <div class="legend-item"><div class="color-sample complete"></div>complete</div>
-    <div class="legend-item"><div class="color-sample incomplete"></div>incomplete</div>
-  </div>
   
   <div class="table-container">
     <table class="table">
       <thead id="table-head">
         <tr id="date-header-row">
-          <!-- <th class="habits-header-cell cell">habits</th> -->
-          <th class="habits-header-cell cell"></th>
+          <th class="habits-header-cell cell">habits</th>
         </tr>
       </thead>
       
@@ -31,20 +25,29 @@
     </table>
   </div>
 
+  <div id="legend">
+    <div class="legend-item"><div class="color-sample complete"></div>success (great job!)</div>
+    <div class="legend-item"><div class="color-sample incomplete"></div>fail (it's okay, just don't let it happen again ;)</div>
+  </div>
+  
   <div>
     <form id="form">
 
-      <input type="text" name="habit-title" id="habit-title-input" placeholder="new habit..." required>
+      <input type="text" name="habit-title" id="habit-title-input" placeholder="new habit" required>
 
-      <input type="radio" name="habit-type" id="habit-type-daily" value="daily" checked>
+      <!-- <input type="radio" name="habit-type" id="habit-type-daily" value="daily" checked>
       <label for="habit-type-daily">daily</label>
       <input type="radio" name="habit-type" id="habit-type-weekly" value="weekly">
-      <label for="habit-type-weekly">weekly</label>
+      <label for="habit-type-weekly">weekly</label> -->
 
       <button type="submit" id="habit-submit">add</button>
 
     </form>
   </div>
+
+  <footer class="footer">
+    <div class="credits">built &amp; designed for fun by <a href="https://www.codepen.io/kayfo23">kayfo.</a></div>
+  </footer>
     
   <script src="index.js"></script>
 </body>

@@ -1,3 +1,17 @@
+:root {
+  /* COLORS */
+  --white: #ffffff;
+  --background-color: rgb(255, 253, 245);
+  --primary-color: rgb(55, 130, 243);
+  --highlight-color: rgb(112, 166, 248);
+
+  --default-color: rgb(225, 237, 254);
+  --complete-color: rgb(36, 219, 134);
+  --incomplete-color: rgb(252, 130, 150);
+
+  --primary-text-color: rgb(84, 84, 84);
+}
+
 *,
 *:before,
 *:after {
@@ -10,7 +24,8 @@ body {
   font-family: 'avenir', arial;
   text-align: center;
   margin: 20px;
-  background: rgb(255, 253, 245);
+  background: var(--background-color);
+  color: var(--primary-text-color);
 }
 
 #month-header {
@@ -18,6 +33,7 @@ body {
   text-transform: lowercase;
   font-weight: lighter;
   font-size: 50px;
+  color: var(--primary-text-color);
 }
 
 .legend-item {
@@ -37,53 +53,54 @@ body {
 .cell {
   text-align: center;
   border-radius: 5px;
-  background: rgb(225, 237, 254);
+  background: var(--default-color);
+  color: var(--background-color);
+  font-weight: lighter;
 }
 
 .date-cell {
   width: 30px;
-  background: rgb(96, 151, 235);
-  color: #fff;
+  background: var(--primary-color);
 }
 .habits-header-cell {
   width: 250px;
-  background: rgb(255, 253, 245);
-  /* font-weight: lighter;
-  background: rgb(38, 117, 235);
-  color: #fff; */
+  background: var(--primary-color);
+  color: var(--white);
 }
 .habit-title-cell {
   height: 30px;
-  background: rgb(96, 151, 235);
-  color: #fff;
+  background: var(--primary-color);
+  position: relative;
 }
 
 .highlight {
-  background: rgb(140, 199, 247);
+  background: var(--highlight-color);
 }
 
 .complete {
-  background: rgb(57, 245, 129);
+  background: var(--complete-color);
 }
 .incomplete {
-  background: rgb(255, 135, 155);
+  background: var(--incomplete-color);
 }
 
 .delete {
   background: transparent;
   border: none;
-  color: #fff;
-  padding-left: 10px;
+  color: var(--background-color);
+  position: absolute;
+  left: 5px;
+  top: 8px;
 }
 
 #form {
-  margin: 20px;  
+  margin: 40px;  
 }
 
 .table-container {
   width: 90%;
   margin: 0 auto;
-  padding: 20px;
+  padding-top: 20px;
 }
 
 .table {
@@ -95,14 +112,35 @@ body {
   height: 30px;
   border-radius: 5px;
   font-family: 'avenir', arial;
-  font-size: 16px;
-  border: 1px solid #ccc;
+  font-size: 12px;
+  border: 1px solid var(--primary-color);
+  background: var(--background--color);
+  padding: 5px;
 }
 
 #habit-submit {
   width: 50px;
   height: 30px;
   border-radius: 5px;
+  border: none;
   font-family: 'avenir', arial;
-  font-size: 16px;
+  font-size: 12px;
+  background: var(--primary-color);
+  color: var(--background-color);
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 40px;
+}
+.credits {
+  font-size: 12px;
+  color: var(--primary-text-color);
+}
+.credits a {
+  color: var(--primary-color);
+  text-decoration: none;
 }
