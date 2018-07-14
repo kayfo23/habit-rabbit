@@ -92,6 +92,15 @@ const addHabitTitle = (habit, row) => {
   title.classList.add('cell', 'habit-title-cell');
   title.textContent = habit.title;
   row.appendChild(title);
+
+  let deleteButton = document.createElement('button');
+  deleteButton.textContent = 'X';
+  deleteButton.classList.add('delete');
+  deleteButton.addEventListener('click', () => {
+    deleteHabit(habit.id);
+  });
+  title.appendChild(deleteButton);
+
   return row;
 };
 
@@ -102,15 +111,15 @@ const addDailyCells = (habit, row) => {
 
     let dateKey = `${days2[currDay]} ${months2[month]} ${i} ${year}`;
 
-    const cell = document.createElement("td");
-    cell.classList.add("cell", "daily-cell");
+    const cell = document.createElement('td');
+    cell.classList.add('cell', 'daily-cell');
     // cell.setAttribute("date-key", dateKey);
 
     if (habit.history[dateKey]) {
       cell.classList.add(habit.history[dateKey]);
     }
 
-    cell.addEventListener("click", () => updateHabit(habit.id, dateKey));
+    cell.addEventListener('click', () => updateHabit(habit.id, dateKey));
     row.appendChild(cell);
 
     currDay++;
@@ -195,8 +204,6 @@ function displayHabits() {
       // }
       row.setAttribute('data-habit-id', habit.id);
 
-      // create a delete button here and append as well if applicable
-
       tableBody.appendChild(row);
 
       // iterator to next item in cursor
@@ -219,30 +226,30 @@ function displayHabits() {
 function addHabit(e) {
   e.preventDefault();
 
-  const titleInput = document.getElementById("habit-title-input").value;
-  const typeInput = document.getElementById("habit-type-daily").checked
-    ? document.getElementById("habit-type-daily").value
-    : document.getElementById("habit-type-weekly").value;
+  const titleInput = document.getElementById('habit-title-input').value;
+  const typeInput = document.getElementById('habit-type-daily').checked
+    ? document.getElementById('habit-type-daily').value
+    : document.getElementById('habit-type-weekly').value;
 
   let newHabit = { title: titleInput, type: typeInput, history: {} };
 
-  let transaction = db.transaction(["habits"], "readwrite");
+  let transaction = db.transaction(['habits'], 'readwrite');
   let objectStore = transaction.objectStore("habits");
 
   var request = objectStore.add(newHabit);
 
   request.onsuccess = function() {
-    document.getElementById("habit-title-input").value = ""; // clear new habit title input
-    document.getElementById("habit-type-daily").checked = true;
+    document.getElementById('habit-title-input').value = ''; // clear new habit title input
+    document.getElementById('habit-type-daily').checked = true;
   };
 
   transaction.oncomplete = function() {
-    console.log("transaction complete: database modification finished");
+    console.log('transaction complete: database modification finished');
     displayHabits();
   };
 
   transaction.onerror = function() {
-    console.log("transaction not opened due to error");
+    console.log('transaction not opened due to error');
   };
 }
 
@@ -277,3 +284,12 @@ function updateHabit(habitId, dateKey) {
 
 // DELETE HABITS
 
+function deleteHabit(habitId) {
+  var deleteRequest = db.transaction(['habits'], 'readwrite')
+                        .objectStore('habits')
+                        .delete(habitId);
+  deleteRequest.onsuccess = function() {
+    console.log('habit successfully deleted');
+    displayHabits();
+  }
+}
