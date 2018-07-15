@@ -80,7 +80,7 @@ function displayHabits() {
       row.setAttribute('data-habit-id', habit.id);
 
       tableBody.appendChild(row);
-      legend.style.opacity = 1;
+      // legend.style.opacity = 1;
 
       // iterator to next item in cursor
       cursor.continue();
@@ -92,7 +92,7 @@ function displayHabits() {
         cell.setAttribute('colspan', 40);
         row.appendChild(cell);
         tableBody.appendChild(row);
-        legend.style.opacity = 0;
+        // legend.style.opacity = 0;
       }
     }
   }
@@ -126,8 +126,16 @@ const addDailyCells = (habit, row) => {
     cell.classList.add('cell', 'daily-cell');
     // cell.setAttribute("date-key", dateKey);
 
-    if (habit.history[dateKey]) {
-      cell.classList.add(habit.history[dateKey]);
+    let response = habit.history[dateKey]; // 'complete', 'incomplete', null/undefined
+
+    if (response) {
+      cell.classList.add(response);
+
+      if (response === 'complete') {
+        cell.innerHTML = '<i class="fas fa-check"></i>';
+      } else if (response === 'incomplete') {
+        cell.innerHTML = '<i class="fas fa-times"></i>';
+      }
     }
 
     cell.addEventListener('click', () => updateHabit(habit.id, dateKey));
