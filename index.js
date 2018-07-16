@@ -23,6 +23,8 @@ window.onload = function() {
     objectStore.createIndex('title', 'title', { unique: false });
     objectStore.createIndex('type', 'type', { unique: false });
     objectStore.createIndex('history', 'history', { unique: false });
+    objectStore.createIndex('start', 'start', { unique: false });
+
     console.log('database setup complete');
   }
 
@@ -178,15 +180,19 @@ const addHabitTitleCell = (habit, row, classname, type) => {
 };
 
 const addDailyCells = (habit, row) => {
+  // for comparing whether day falls after habit start date
+  const habitStart = habit.start;
+  const habitStartNumber = `${habitStart.getFullYear()}${habitStart.getMonth()}${habitStart.getDate()}`;
+
   let currDay = startDay;
   for (i = 1; i <= monthLength; i++) {
     let currDate = i;
+    let currDateNumber = Number('' + year + month + i);
 
     let dateKey = `${days2[currDay]} ${months2[month]} ${i} ${year}`;
 
     const cell = document.createElement('td');
     cell.classList.add('cell', 'daily-cell');
-    // cell.setAttribute("date-key", dateKey);
 
     let response = habit.history[dateKey]; // 'complete', 'incomplete', null/undefined
 
@@ -199,12 +205,13 @@ const addDailyCells = (habit, row) => {
         cell.innerHTML = '<i class="fas fa-times"></i>';
       }
     // if no response recorded from previous day yet habit was active
-    } else if (i < date && !response) {
-      response = 'incomplete';
-      cell.classList.add('incomplete');
-      cell.innerHTML = '<i class="fas fa-times"></i>';
+    } else if (currDateNumber >= habitStartNumber) {
+      if (i < date && !response) {
+        response = "incomplete";
+        cell.classList.add("incomplete");
+        cell.innerHTML = '<i class="fas fa-times"></i>';
+      }
     }
-
     // prevent responses being added to future dates
     if (i <= date) {
       cell.addEventListener('click', () => { updateHabit(habit.id, dateKey)});
@@ -240,7 +247,7 @@ function addHabit(e) {
   //   : document.getElementById('habit-type-weekly').value;
   const typeInput = 'daily';
 
-  let newHabit = { title: titleInput, type: typeInput, history: {} };
+  let newHabit = { title: titleInput, type: typeInput, history: {}, start: new Date() };
 
   let transaction = db.transaction(['habits'], 'readwrite');
   let objectStore = transaction.objectStore("habits");
@@ -376,9 +383,20 @@ const addDayAndDateCells = () => {
 addDayAndDateCells();
 
 
+
 /*
-BUG: 
-today and month checkboxes are not syncing on updates
+stop auto fills for days occurring before habit start date
 
+ - add start date key to each habit in db
+ - when creating daily cells, only mark as incomplete if current date falls after habit start day
+     - if (date right now > date when habit was created)
+       then okay to mark as incomplete if there was no response
 
+ - what i have:
+
+  start date (full datetime format)
+  curr iterating date (month, date, day, year, but not in datetime format) => 6 16 2018
+
+  2018 11 16
+  2018 9 27
 */
