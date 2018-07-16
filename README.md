@@ -1,4 +1,6 @@
-# ![](habit-tracker/habit-favicon.png | width=20) habit-tracker (in progress)
+# habit-tracker (in progress)
+
+![](habit-favicon.png)
 
 Keep track of your monthly progress in developing better habits. 
 
