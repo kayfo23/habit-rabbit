@@ -182,7 +182,7 @@ const addHabitTitleCell = (habit, row, classname, type) => {
 const addDailyCells = (habit, row) => {
   // for comparing whether day falls after habit start date
   const habitStart = habit.start;
-  const habitStartNumber = `${habitStart.getFullYear()}${habitStart.getMonth()}${habitStart.getDate()}`;
+  const habitStartNumber = Number(`${habitStart.getFullYear()}${habitStart.getMonth()}${habitStart.getDate()}`);
 
   let currDay = startDay;
   for (i = 1; i <= monthLength; i++) {
@@ -196,15 +196,18 @@ const addDailyCells = (habit, row) => {
 
     let response = habit.history[dateKey]; // 'complete', 'incomplete', null/undefined
 
+    if (currDateNumber === habitStartNumber) {
+      cell.classList.add("start-date");
+    }
+
     if (response) {
       cell.classList.add(response);
-
       if (response === 'complete') {
         cell.innerHTML = '<i class="fas fa-check"></i>';
       } else if (response === 'incomplete') {
         cell.innerHTML = '<i class="fas fa-times"></i>';
       }
-    // if no response recorded from previous day yet habit was active
+    // if no response recorded from previous day yet habit was active auto-mark as incomplete
     } else if (currDateNumber >= habitStartNumber) {
       if (i < date && !response) {
         response = "incomplete";

@@ -8,6 +8,7 @@
   --default-color: rgb(225, 237, 254);
   --complete-color: rgb(36, 219, 134);
   --incomplete-color: rgb(252, 130, 150);
+  --start-date-color: rgb(231, 201, 65);
 
   --primary-text-color: rgb(84, 84, 84);
 }
@@ -110,6 +111,9 @@ body {
 }
 .incomplete {
   background: var(--incomplete-color);
+}
+.start-date {
+  background: var(--start-date-color);
 }
 
 
