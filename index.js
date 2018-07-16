@@ -72,7 +72,7 @@ const toggleView = () => {
 document.querySelectorAll('.view-option').forEach(viewoption => {
   viewoption.addEventListener('click', (e) => { 
     let selectedView = e.target.id;
-    if (!selectedView !== currentView) {
+    if (selectedView !== currentView) {
       currentView = selectedView;
       toggleView();
     }
