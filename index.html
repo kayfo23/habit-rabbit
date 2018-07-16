@@ -12,29 +12,35 @@
 <body>
   
   <div>
-    <h1 id="month-header"></h1>
+    <h1 id="view-header"></h1>
   </div>
-  
-  <div class="table-container">
+
+  <div>
+    <button id="toggle">toggle</button>
+  </div>
+
+  <div class="today-view">
     <table class="table">
-      <thead id="table-head">
+      <thead id="today-table-head">
+        <tr id="today-header-row">
+          <th id="today-header-cell" colspan="5"></th>
+        </tr>
+      </thead>
+      <tbody id="today-table-body"></tbody>
+    </table>
+  </div>
+
+  <div class="month-view">
+    <table class="table">
+      <thead id="month-table-head">
         <tr id="date-header-row">
           <th class="habits-header-cell cell">habits</th>
         </tr>
       </thead>
       
-      <tbody id="table-body"></tbody>
+      <tbody id="month-table-body"></tbody>
     </table>
   </div>
-
-  <!-- <div id="legend">
-    <div class="legend-item">
-      <div class="color-sample complete"><i class="fas fa-check"></i></div>success (great job!)
-    </div>
-    <div class="legend-item">
-      <div class="color-sample incomplete"><i class="fas fa-times"></i></div>fail (it's okay, just don't let it happen again ;)
-    </div>
-  </div> -->
   
   <div>
     <form id="form">

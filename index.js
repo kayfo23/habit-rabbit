@@ -41,6 +41,7 @@ const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 
 const monthLengths = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 const today = new Date();
+const day = today.getDay();
 const date = today.getDate();
 const month = today.getMonth();
 const year = today.getFullYear();
@@ -49,15 +50,35 @@ const year = today.getFullYear();
 const days2 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const months2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
-document.getElementById('month-header').textContent = months[month];
 
+
+//****************** VIEW *******************//
+
+// true = Today
+// false = Month
+let todayView = true; 
+const todayHeader = `${days2[day].toLowerCase()}, ${months[month].toLowerCase()} ${date}, ${year}`;
+const monthHeader = months[month];
+
+document.getElementById("view-header").textContent = todayHeader;
+
+const toggleView = () => {
+  todayView = !todayView;
+
+  // change styles (alignments) of today and month tables
+
+  document.getElementById("view-header").textContent = todayView ? todayHeader : monthHeader;
+};
+
+document.getElementById('toggle').addEventListener('click', toggleView);
 
 
 //****************** DISPLAY HABITS *******************//
 
 function displayHabits() {
-  const tableBody = document.getElementById('table-body');
-  tableBody.innerHTML = '';
+  const monthTable = document.getElementById('month-table-body');
+  const todayTable = document.getElementById('today-table-body');
+  monthTable.innerHTML = todayTable.innerHTML = "";
 
   // open object store and get cursor (iterates through all data items in store)
   let objectStore = db.transaction('habits').objectStore('habits');
@@ -67,40 +88,46 @@ function displayHabits() {
 
     if (cursor) {
       let habit = cursor.value;
+      
+      // display month table
+      let monthRow = document.createElement('tr');
+      addHabitTitleCell(habit, monthRow, 'month-habit-title-cell');
+      addDailyCells(habit, monthRow);
+      monthRow.setAttribute('data-habit-id', habit.id);
+      monthTable.appendChild(monthRow);
 
-      let row = document.createElement('tr');
-
-      addHabitTitleCell(habit, row);
-
-      // if (habit.type === "weekly") {
-      //   addWeeklyCells(row);
-      // } else {
-        addDailyCells(habit, row);
-      // }
-      row.setAttribute('data-habit-id', habit.id);
-
-      tableBody.appendChild(row);
-      // legend.style.opacity = 1;
+      // display today table
+      let todayRow = document.createElement('tr');
+      addCheckboxCell(habit, todayRow);
+      addHabitTitleCell(habit, todayRow, 'today-habit-title-cell');
+      todayRow.setAttribute("data-habit-id", habit.id);
+      todayTable.appendChild(todayRow);
 
       // iterator to next item in cursor
       cursor.continue();
+
     } else {
-      if (!tableBody.innerHTML) {
-        let row = document.createElement('tr');
+      if (!monthTable.innerHTML) {
+        let monthRow = document.createElement('tr');
         let cell = document.createElement('td');
-        cell.textContent = `no habits here! add some below.`;
+        cell.textContent = `no habits here! add some below`;
         cell.setAttribute('colspan', 40);
-        row.appendChild(cell);
-        tableBody.appendChild(row);
-        // legend.style.opacity = 0;
+        monthRow.appendChild(cell);
+        monthTable.appendChild(monthRow);
       }
     }
   }
 }
 
-const addHabitTitleCell = (habit, row) => {
+const addCheckboxCell = (habit, row) => {
+  const checkboxCell = document.createElement('td');
+  checkboxCell.classList.add('checkbox-cell');
+  row.appendChild(checkboxCell);
+}
+
+const addHabitTitleCell = (habit, row, classname) => {
   const title = document.createElement('td');
-  title.classList.add('cell', 'habit-title-cell');
+  title.classList.add('cell', classname);
   title.textContent = habit.title;
   row.appendChild(title);
 

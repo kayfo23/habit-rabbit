@@ -28,7 +28,7 @@ body {
   color: var(--primary-text-color);
 }
 
-#month-header {
+#view-header {
   padding: 20px;
   text-transform: lowercase;
   font-weight: lighter;
@@ -68,10 +68,21 @@ body {
   background: var(--primary-color);
   color: var(--white);
 }
-.habit-title-cell {
+.month-habit-title-cell {
   height: 30px;
   background: var(--highlight-color);
   position: relative;
+}
+.today-habit-title-cell {
+  height: 40px;
+  position: relative;
+  color: var(--primary-color);
+  background: var(--background-color);
+  font-size: 20px;
+}
+.checkbox-cell {
+  background: blue;
+  width: 40px;
 }
 
 .highlight {
@@ -98,7 +109,7 @@ body {
   margin: 40px;  
 }
 
-.table-container {
+.month-view {
   width: 90%;
   margin: 0 auto;
   padding-top: 20px;
