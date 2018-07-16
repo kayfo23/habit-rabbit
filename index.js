@@ -54,23 +54,30 @@ const months2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 
 
 //****************** VIEW *******************//
 
-// true = Today
-// false = Month
-let todayView = true; 
 const todayHeader = `${days2[day].toLowerCase()}, ${months[month].toLowerCase()} ${date}, ${year}`;
-const monthHeader = months[month];
+const monthHeader = `${months[month]} ${year}`;
 
-document.getElementById("view-header").textContent = todayHeader;
+let currentView = 'today'; 
+document.getElementById('view-header').textContent = todayHeader;
 
 const toggleView = () => {
-  todayView = !todayView;
+  document.getElementById('view-header').textContent = currentView === 'today' ? todayHeader : monthHeader;
 
-  // change styles (alignments) of today and month tables
+  document.querySelectorAll('.view-option').forEach(viewoption => viewoption.classList.toggle('selected-view'));
 
-  document.getElementById("view-header").textContent = todayView ? todayHeader : monthHeader;
+  document.getElementById('today-view').classList.toggle('hide-left');
+  document.getElementById('month-view').classList.toggle('hide-right');
 };
 
-document.getElementById('toggle').addEventListener('click', toggleView);
+document.querySelectorAll('.view-option').forEach(viewoption => {
+  viewoption.addEventListener('click', (e) => { 
+    let selectedView = e.target.id;
+    if (!selectedView !== currentView) {
+      currentView = selectedView;
+      toggleView();
+    }
+  });
+});
 
 
 //****************** DISPLAY HABITS *******************//
@@ -121,7 +128,21 @@ function displayHabits() {
 
 const addCheckboxCell = (habit, row) => {
   const checkboxCell = document.createElement('td');
-  checkboxCell.classList.add('checkbox-cell');
+  checkboxCell.classList.add('cell', 'checkbox-cell');
+
+  let dateKey = `${days2[day]} ${months2[month]} ${date} ${year}`;
+  let response = habit.history[dateKey]; // 'complete', 'incomplete', null/undefined
+
+  if (response) {
+    checkboxCell.classList.add(response);
+
+    if (response === "complete") {
+      checkboxCell.innerHTML = '<i class="fas fa-check"></i>';
+    } else if (response === "incomplete") {
+      checkboxCell.innerHTML = '<i class="fas fa-times"></i>';
+    }
+  }
+  checkboxCell.addEventListener("click", () => { updateHabit(habit.id, dateKey) });
   row.appendChild(checkboxCell);
 }
 
@@ -143,8 +164,8 @@ const addHabitTitleCell = (habit, row, classname) => {
 };
 
 const addDailyCells = (habit, row) => {
+  let currDay = startDay;
   for (i = 1; i <= monthLength; i++) {
-    let currDay = startDay;
     let currDate = i;
 
     let dateKey = `${days2[currDay]} ${months2[month]} ${i} ${year}`;
@@ -177,9 +198,7 @@ const addDailyCells = (habit, row) => {
     row.appendChild(cell);
 
     currDay++;
-    if (currDay === 7) {
-      currDay = 0;
-    }
+    if (currDay === 7) { currDay = 0 };
   }
 }
 
@@ -232,7 +251,7 @@ function addHabit(e) {
 //****************** UPDATE HABITS *******************//
 
 function updateHabit(habitId, dateKey) {
-  var objectStore = db.transaction(['habits'], 'readwrite'). objectStore('habits');
+  var objectStore = db.transaction(['habits'], 'readwrite').objectStore('habits');
   var objectStoreHabitRequest = objectStore.get(habitId);
 
   objectStoreHabitRequest.onsuccess = function() {
@@ -249,6 +268,8 @@ function updateHabit(habitId, dateKey) {
       newResponse = 'complete';
     }
     habit.history[dateKey] = newResponse;
+
+    console.log(habit);
 
     var updateHabitRequest = objectStore.put(habit);
     updateHabitRequest.onsuccess = function() {
@@ -339,3 +360,11 @@ const addDayAndDateCells = () => {
   }
 };
 addDayAndDateCells();
+
+
+/*
+BUG: 
+today and month checkboxes are not syncing on updates
+
+
+*/
