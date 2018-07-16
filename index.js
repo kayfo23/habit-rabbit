@@ -65,8 +65,8 @@ const toggleView = () => {
 
   document.querySelectorAll('.view-option').forEach(viewoption => viewoption.classList.toggle('selected-view'));
 
-  document.getElementById('today-view').classList.toggle('hide-left');
-  document.getElementById('month-view').classList.toggle('hide-right');
+  document.getElementById('today-view').classList.toggle('hidden');
+  document.getElementById('month-view').classList.toggle('hidden');
 };
 
 document.querySelectorAll('.view-option').forEach(viewoption => {
@@ -98,7 +98,7 @@ function displayHabits() {
       
       // display month table
       let monthRow = document.createElement('tr');
-      addHabitTitleCell(habit, monthRow, 'month-habit-title-cell');
+      addHabitTitleCell(habit, monthRow, 'month-habit-title-cell', 'month');
       addDailyCells(habit, monthRow);
       monthRow.setAttribute('data-habit-id', habit.id);
       monthTable.appendChild(monthRow);
@@ -106,7 +106,7 @@ function displayHabits() {
       // display today table
       let todayRow = document.createElement('tr');
       addCheckboxCell(habit, todayRow);
-      addHabitTitleCell(habit, todayRow, 'today-habit-title-cell');
+      addHabitTitleCell(habit, todayRow, 'today-habit-title-cell', 'daily');
       todayRow.setAttribute("data-habit-id", habit.id);
       todayTable.appendChild(todayRow);
 
@@ -146,7 +146,7 @@ const addCheckboxCell = (habit, row) => {
   row.appendChild(checkboxCell);
 }
 
-const addHabitTitleCell = (habit, row, classname) => {
+const addHabitTitleCell = (habit, row, classname, type) => {
   const title = document.createElement('td');
   title.classList.add('cell', classname);
   title.textContent = habit.title;
@@ -154,11 +154,17 @@ const addHabitTitleCell = (habit, row, classname) => {
 
   let deleteButton = document.createElement('button');
   deleteButton.textContent = 'X';
-  deleteButton.classList.add('delete');
   deleteButton.addEventListener('click', () => {
     deleteHabit(habit.id);
   });
-  title.appendChild(deleteButton);
+  if (type === 'month') { 
+    deleteButton.classList.add('month-delete');
+    title.appendChild(deleteButton) 
+  } else { 
+    deleteButton.classList.add('today-delete')
+    title.prepend(deleteButton);
+  }
+  
 
   return row;
 };
