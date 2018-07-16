@@ -177,3 +177,6 @@ body {
   color: var(--primary-color);
   text-decoration: none;
 }
+.credit-image {
+  width: 20px;
+}
