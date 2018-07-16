@@ -88,7 +88,7 @@ body {
   color: var(--primary-color);
   background: var(--background-color);
   font-size: 20px;
-  padding-left: 10px;
+  padding: 0 15px;
   min-width: 100px;
 }
 .daily-cell {
@@ -117,21 +117,18 @@ body {
 .month-delete {
   border: none;
   cursor: pointer;
+  background: transparent;
+  position: absolute;
 }
 .today-delete {
   color: var(--primary-color);
-  position: absolute;
   right: 0;
   top: 13px;
 }
 .month-delete {
-  background: transparent;
-  border: none;
   color: var(--background-color);
-  position: absolute;
   left: 5px;
   top: 8px;
-  cursor: pointer;
 }
 
 

@@ -169,8 +169,8 @@ const addHabitTitleCell = (habit, row, classname, type) => {
     deleteButton.classList.add('month-delete');
     title.appendChild(deleteButton) 
   } else { 
-    deleteButton.classList.add('today-delete')
-    title.prepend(deleteButton);
+    deleteButton.classList.add('today-delete');
+    title.appendChild(deleteButton);
   }
   
 
