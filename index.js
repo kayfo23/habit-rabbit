@@ -136,9 +136,17 @@ const addDailyCells = (habit, row) => {
       } else if (response === 'incomplete') {
         cell.innerHTML = '<i class="fas fa-times"></i>';
       }
+    // if no response recorded from previous day yet habit was active
+    } else if (i < date && !response) {
+      response = 'incomplete';
+      cell.classList.add('incomplete');
+      cell.innerHTML = '<i class="fas fa-times"></i>';
     }
 
-    cell.addEventListener('click', () => updateHabit(habit.id, dateKey));
+    // prevent responses being added to future dates
+    if (i <= date) {
+      cell.addEventListener('click', () => { updateHabit(habit.id, dateKey)});
+    }
     row.appendChild(cell);
 
     currDay++;
