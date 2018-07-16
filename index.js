@@ -117,10 +117,18 @@ function displayHabits() {
       if (!monthTable.innerHTML) {
         let monthRow = document.createElement('tr');
         let cell = document.createElement('td');
-        cell.textContent = `no habits here! add some below`;
+        cell.textContent = `no habits started!`;
         cell.setAttribute('colspan', 40);
         monthRow.appendChild(cell);
         monthTable.appendChild(monthRow);
+      }
+      if (!todayTable.innerHTML) {
+        let todayRow = document.createElement('tr');
+        let cell = document.createElement("td");
+        cell.textContent = `no habits started!`;
+        cell.setAttribute("colspan", 40);
+        todayRow.appendChild(cell);
+        todayTable.appendChild(todayRow);
       }
     }
   }
