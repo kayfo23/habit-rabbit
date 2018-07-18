@@ -24,7 +24,7 @@
 }
 
 body {
-  font-family: 'avenir', arial;
+  font-family: 'nixie one', 'avenir', arial;
   text-align: center;
   margin: 20px;
   background: var(--background-color);
@@ -46,23 +46,33 @@ body {
   cursor: pointer;
 }
 .selected-view {
+  font-weight: bold;
   border-bottom: 3px solid var(--primary-color);
+  transition: .2s;
+}
+.view-container {
+  position: relative;
+  margin: 0 auto;
+  width: 90%;
+  height: auto;
+}
+.view {
+  width: 100%;
+  padding-top: 20px;
+  transition: .3s ease-out;
+}
+#today-view {
+  position: absolute;
+  top: 0;
+}
+/* hide table */
+.hidden { 
+  transform: scale(0);
 }
 
-.view-container {
-  width: 90%;
-  margin: 0 auto;
-  padding-top: 20px;
-}
 .table {
   margin: 0 auto;
 }
-
-/* hide table */
-.hidden { 
-  display: none;
-}
-
 .cell {
   text-align: center;
   border-radius: 5px;
@@ -70,29 +80,28 @@ body {
   color: var(--background-color);
   font-weight: lighter;
 }
-
 .date-cell {
   width: 30px;
   background: var(--primary-color);
 }
 .habits-header-cell {
   width: 250px;
-  background: var(--primary-color);
+  background: var(--highlight-color);
   color: var(--white);
 }
 .month-habit-title-cell {
   height: 30px;
-  background: var(--highlight-color);
+  background: var(--primary-color);
   position: relative;
 }
 .today-habit-title-cell {
   height: 35px;
   position: relative;
-  color: var(--primary-text-color);
-  background: var(--background-color);
+  color: var(--white);
+  background: var(--primary-color);
   font-size: 20px;
-  padding: 0 15px;
-  min-width: 100px;
+  padding: 5px 30px;
+  min-width: 150px;
 }
 .daily-cell {
   cursor: pointer;
@@ -128,9 +137,9 @@ body {
   position: absolute;
 }
 .today-delete {
-  color: var(--primary-color);
-  right: 0;
-  top: 13px;
+  color: var(--default-color);
+  right: 5px;
+  top: 10px;
 }
 .month-delete {
   color: var(--background-color);
@@ -138,6 +147,10 @@ body {
   top: 8px;
 }
 
+
+.form-container {
+  position: relative;
+}
 
 #form {
   margin: 40px;
