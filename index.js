@@ -50,13 +50,14 @@ const year = today.getFullYear();
 
 // for matching Date.getDateString() output, used for storing responses
 const days2 = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const daysFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 const months2 = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 
 
 //****************** VIEW *******************//
 
-const todayHeader = `${days2[day].toLowerCase()}, ${months[month].toLowerCase()} ${date}, ${year}`;
+const todayHeader = `${daysFull[day].toLowerCase()}, ${months[month].toLowerCase()} ${date}, ${year}`;
 const monthHeader = `${months[month]} ${year}`;
 
 let currentView = 'today'; 
