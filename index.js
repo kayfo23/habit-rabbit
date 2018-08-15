@@ -31,7 +31,10 @@ window.onload = function() {
     console.log('database setup complete');
   };
 
-  document.getElementById('form').onsubmit = addHabit;
+  const form = document.getElementById('form');
+  const input = document.getElementById('habit-title-input');
+  form.onsubmit = addHabit;
+  input.onblur = () => (input.value = '');
 };
 
 //****************** VARIABLES *******************//
