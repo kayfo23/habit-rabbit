@@ -269,27 +269,12 @@ const addDailyCells = (habit, row) => {
   }
 };
 
-// const addWeeklyCells = row => {
-//   for (let i = 0; i < 5; i++) {
-//     const cell = document.createElement('td');
-//     cell.classList.add('cell', 'weekly-cell');
-//     cell.setAttribute('colspan', '7');
-
-//     cell.addEventListener("click", () => changeCellColor(cell));
-
-//     row.appendChild(cell);
-//   }
-// }
-
 //****************** ADD HABITS *******************//
 
 function addHabit(e) {
   e.preventDefault();
 
   const titleInput = document.getElementById('habit-title-input').value;
-  // const typeInput = document.getElementById('habit-type-daily').checked
-  //   ? document.getElementById('habit-type-daily').value
-  //   : document.getElementById('habit-type-weekly').value;
   const typeInput = 'daily';
 
   let newHabit = {
