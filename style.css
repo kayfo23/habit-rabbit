@@ -3,13 +3,29 @@
   --white: #ffffff;
   --background-color: rgb(255, 253, 245);
   --primary-color: rgb(16, 134, 189);
-  --primary-color-gradient: linear-gradient(to bottom right, rgb(101, 197, 241), rgb(16, 134, 189));
+  --primary-color-gradient: linear-gradient(
+    to bottom right,
+    rgb(101, 197, 241),
+    rgb(16, 134, 189)
+  );
   --highlight-color: rgb(112, 166, 248);
 
   --default-color: rgb(225, 237, 254);
-  --complete-color: linear-gradient(to bottom right, rgb(136, 243, 193), rgb(16, 156, 91));
-  --incomplete-color: linear-gradient(to bottom right, rgb(245, 166, 179), rgb(207, 56, 81));
-  --start-date-color: linear-gradient(to bottom right, rgb(241, 237, 103), rgb(202, 196, 30));
+  --complete-color: linear-gradient(
+    to bottom right,
+    rgb(136, 243, 193),
+    rgb(16, 156, 91)
+  );
+  --incomplete-color: linear-gradient(
+    to bottom right,
+    rgb(245, 166, 179),
+    rgb(207, 56, 81)
+  );
+  --start-date-color: linear-gradient(
+    to bottom right,
+    rgb(241, 237, 103),
+    rgb(202, 196, 30)
+  );
 
   --primary-text-color: rgb(84, 84, 84);
   --secondary-text-color: rgb(135, 135, 135);
@@ -48,7 +64,7 @@ body {
 .selected-view {
   font-weight: bold;
   border-bottom: 3px solid var(--primary-color);
-  transition: .2s;
+  transition: 0.2s;
 }
 .view-container {
   position: relative;
@@ -59,14 +75,14 @@ body {
 .view {
   width: 100%;
   padding-top: 20px;
-  transition: .3s ease-out;
+  transition: 0.3s ease-out;
 }
 #today-view {
   position: absolute;
   top: 0;
 }
 /* hide table */
-.hidden { 
+.hidden {
   transform: scale(0);
 }
 
@@ -128,7 +144,6 @@ body {
   background: var(--start-date-color);
 }
 
-
 .today-delete,
 .month-delete {
   border: none;
@@ -146,7 +161,6 @@ body {
   left: 5px;
   top: 8px;
 }
-
 
 .form-container {
   position: relative;
@@ -177,7 +191,7 @@ body {
   margin: 3px auto;
   background: var(--default-color);
   text-align: center;
-  transition: .2s;
+  transition: 0.2s;
 }
 #habit-title-input:focus {
   margin-top: 12px;
@@ -198,11 +212,9 @@ body {
   left: 50%;
   width: 100%;
   transform: translateX(-50%);
-  transition: .2s;
+  transition: 0.2s;
   color: var(--secondary-text-color);
 }
-
-
 
 .footer {
   position: fixed;
@@ -220,5 +232,5 @@ body {
   text-decoration: none;
 }
 .credit-image {
-  width: 20px;
+  width: 75px;
 }
