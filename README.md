@@ -1,6 +1,6 @@
 # habit-rabbit (in progress)
 
-![](habit-favicon.png)
+<img src="habit-favicon.png" alt="logo" width="100px" />
 
 Keep track of your monthly progress in developing better habits. 
 
