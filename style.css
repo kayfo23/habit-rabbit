@@ -1,7 +1,7 @@
 :root {
   /* COLORS */
   --white: #ffffff;
-  --background-color: rgb(255, 253, 245);
+  /* --background-color : rgb(255, 253, 245); */
   --primary-color: rgb(16, 134, 189);
   --primary-color-gradient: linear-gradient(
     to bottom right,
@@ -9,7 +9,6 @@
     rgb(16, 134, 189)
   );
   --highlight-color: rgb(112, 166, 248);
-
   --default-color: rgb(225, 237, 254);
   --complete-color: linear-gradient(
     to bottom right,
@@ -26,7 +25,6 @@
     rgb(241, 237, 103),
     rgb(202, 196, 30)
   );
-
   --primary-text-color: rgb(84, 84, 84);
   --secondary-text-color: rgb(135, 135, 135);
 }
@@ -36,6 +34,7 @@
 *:after {
   padding: 0;
   margin: 0;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
 
@@ -43,7 +42,7 @@ body {
   font-family: 'nixie one', 'avenir', arial;
   text-align: center;
   margin: 20px;
-  background: var(--background-color);
+  background: var(--white);
   color: var(--primary-text-color);
 }
 
@@ -61,55 +60,72 @@ body {
   margin: 5px;
   cursor: pointer;
 }
+
 .selected-view {
   font-weight: bold;
   border-bottom: 3px solid var(--primary-color);
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
   transition: 0.2s;
 }
+
 .view-container {
   position: relative;
   margin: 0 auto;
   width: 90%;
   height: auto;
 }
+
 .view {
   width: 100%;
   padding-top: 20px;
+  -webkit-transition: 0.3s ease-out;
+  -o-transition: 0.3s ease-out;
   transition: 0.3s ease-out;
 }
+
 #today-view {
   position: absolute;
   top: 0;
 }
+
 /* hide table */
+
 .hidden {
+  -webkit-transform: scale(0);
+  -ms-transform: scale(0);
   transform: scale(0);
 }
 
 .table {
   margin: 0 auto;
 }
+
 .cell {
   text-align: center;
   border-radius: 5px;
   background: var(--default-color);
-  color: var(--background-color);
+  color: var(--white);
   font-weight: lighter;
 }
+
 .date-cell {
   width: 30px;
   background: var(--primary-color);
 }
+
 .habits-header-cell {
   min-width: 250px;
   background: var(--highlight-color);
   color: var(--white);
 }
+
 .month-habit-title-cell {
   height: 30px;
   background: var(--primary-color);
   position: relative;
 }
+
 .today-habit-title-cell {
   height: 35px;
   position: relative;
@@ -119,13 +135,15 @@ body {
   padding: 5px 30px;
   min-width: 150px;
 }
+
 .daily-cell {
   cursor: pointer;
 }
+
 .checkbox-cell {
   text-align: center;
   border-radius: 5px;
-  color: var(--background-color);
+  color: var(--white);
   width: 35px;
   font-size: 20px;
   cursor: pointer;
@@ -134,12 +152,15 @@ body {
 .highlight {
   background: var(--highlight-color);
 }
+
 .complete {
   background: var(--complete-color);
 }
+
 .incomplete {
   background: var(--incomplete-color);
 }
+
 .start-date {
   background: var(--start-date-color);
 }
@@ -151,13 +172,15 @@ body {
   background: transparent;
   position: absolute;
 }
+
 .today-delete {
   color: var(--default-color);
   right: 5px;
   top: 10px;
 }
+
 .month-delete {
-  color: var(--background-color);
+  color: var(--white);
   left: 5px;
   top: 8px;
 }
@@ -177,7 +200,11 @@ body {
   height: 50px;
   border-radius: 5px;
   margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
   display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
   align-items: center;
 }
 
@@ -191,27 +218,37 @@ body {
   margin: 3px auto;
   background: var(--default-color);
   text-align: center;
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
   transition: 0.2s;
 }
+
 #habit-title-input:focus {
   margin-top: 12px;
   border-bottom: 1px solid var(--secondary-text-color);
 }
+
 #habit-title-input:focus + .label {
   margin-top: -15px;
   font-size: 12px;
 }
+
 #habit-title-input:valid + .label {
   margin-top: -15px;
   font-size: 12px;
 }
+
 .label {
   position: absolute;
   font-size: 18px;
   padding: 5px;
   left: 50%;
   width: 100%;
+  -webkit-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
   transform: translateX(-50%);
+  -webkit-transition: 0.2s;
+  -o-transition: 0.2s;
   transition: 0.2s;
   color: var(--secondary-text-color);
 }
@@ -223,14 +260,17 @@ body {
   width: 100%;
   padding: 40px;
 }
+
 .credits {
   font-size: 12px;
   color: var(--primary-text-color);
 }
+
 .credits a {
   color: var(--primary-color);
   text-decoration: none;
 }
+
 .credit-image {
   width: 75px;
 }
