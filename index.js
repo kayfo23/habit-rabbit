@@ -186,9 +186,9 @@ const addCheckboxCell = (habit, row) => {
     checkboxCell.classList.add(response);
 
     if (response === 'complete') {
-      checkboxCell.innerHTML = '<i class="fas fa-check"></i>';
+      checkboxCell.innerHTML = '&#10003;';
     } else if (response === 'incomplete') {
-      checkboxCell.innerHTML = '<i class="fas fa-times"></i>';
+      checkboxCell.innerHTML = '&#10005;';
     }
   }
   checkboxCell.addEventListener('click', () => {
@@ -245,16 +245,16 @@ const addDailyCells = (habit, row) => {
     if (response) {
       cell.classList.add(response);
       if (response === 'complete') {
-        cell.innerHTML = '<i class="fas fa-check"></i>';
+        cell.innerHTML = '&#10003;';
       } else if (response === 'incomplete') {
-        cell.innerHTML = '<i class="fas fa-times"></i>';
+        cell.innerHTML = '&#10005;';
       }
       // if no response recorded from previous day yet habit was active auto-mark as incomplete
     } else if (currDateNumber >= habitStartNumber) {
       if (i < date && !response) {
         response = 'incomplete';
         cell.classList.add('incomplete');
-        cell.innerHTML = '<i class="fas fa-times"></i>';
+        cell.innerHTML = '&#10005;';
       }
     }
     // prevent responses being added to future dates
